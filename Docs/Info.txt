@@ -1,0 +1,47 @@
+============================================================
+|                 WM: New World                            |
+============================================================
+WM: New World is a c# game loosly based on the WM:CPP game
+although alot of things are going to be a bit different
+the way the game runs will be using Mongame DesktopGL until
+they update to use SDL.(will change if it doesnt break things)
+The game will be more ingageing by allowing for Male and Female 
+(as well as other genders) to be availible as free people and 
+slaves. as well as thier will be at later stages enemy ai which
+will be fight to gain control of the new land (Currently unnamed)
+
+WM:New World will be availible to run on Mac, Linux and Windows 
+through the use of Mono 4.5.﻿
+
+============================================================
+|               Reasons for the Conversion                 |
+============================================================
+WM:cpp uses c++ which (IMHO) is highly redundant.
+
+My speciality is C# which the new version will be.
+
+This is not a port or conversion WM:New World will be its own
+game.
+
+Currently WM:cpp requires wine to be used on systems other then
+Windows (Which i do not own or use(Currently)) and will not use
+for anything other then using the editor for Window forms
+(Monodevelop doesn't have a windows.forms editor)
+
+
+============================================================
+|                 Requirements and Downloads               |
+============================================================
+Requires Mono (4.5) All other files will be in download.
+Download: None currently
+
+Requirements to Build From Source:
+Monodevelop with Mono (4.5) installed.
+
+============================================================
+|             Interested in helping out                    |
+============================================================
+Currently No help is needed
+
+
+
