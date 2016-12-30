@@ -32,4 +32,11 @@ Global
 		{FC3526C0-F5A4-4A02-BA6E-755387784665} = {52B321AA-AA77-439B-9D51-BE9B3F95FA04}
 		{6152A5CA-93FA-4EAC-9B46-EF875A2E61F8} = {CB42A66C-4473-4698-AC6E-38AF39E0721C}
 	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		Policies = $0
+		$0.VersionControlPolicy = $1
+		$1.CommitMessageStyle = $2
+		$2.IncludeDirectoryPaths = True
+		$1.inheritsSet = Mono
+	EndGlobalSection
 EndGlobal
