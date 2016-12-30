@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{52B321AA-AA77-439B-9D51-BE9B3F95FA04}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WMNW.Core", "Core\WMNW.Core\WMNW.Core.csproj", "{FC3526C0-F5A4-4A02-BA6E-755387784665}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Editor", "Editor", "{B4833FB9-759C-4E56-982A-F1EB0C615C06}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Game", "Game", "{CB42A66C-4473-4698-AC6E-38AF39E0721C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WMNW", "Game\WMNW\WMNW.csproj", "{6152A5CA-93FA-4EAC-9B46-EF875A2E61F8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Other", "Other", "{77A15619-6A4C-4894-98F2-0451B0E6B49E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6152A5CA-93FA-4EAC-9B46-EF875A2E61F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6152A5CA-93FA-4EAC-9B46-EF875A2E61F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6152A5CA-93FA-4EAC-9B46-EF875A2E61F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6152A5CA-93FA-4EAC-9B46-EF875A2E61F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC3526C0-F5A4-4A02-BA6E-755387784665}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC3526C0-F5A4-4A02-BA6E-755387784665}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC3526C0-F5A4-4A02-BA6E-755387784665}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC3526C0-F5A4-4A02-BA6E-755387784665}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{FC3526C0-F5A4-4A02-BA6E-755387784665} = {52B321AA-AA77-439B-9D51-BE9B3F95FA04}
+		{6152A5CA-93FA-4EAC-9B46-EF875A2E61F8} = {CB42A66C-4473-4698-AC6E-38AF39E0721C}
+	EndGlobalSection
+EndGlobal
