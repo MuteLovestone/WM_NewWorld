@@ -38,5 +38,11 @@ Global
 		$1.CommitMessageStyle = $2
 		$2.IncludeDirectoryPaths = True
 		$1.inheritsSet = Mono
+		$0.DotNetNamingPolicy = $3
+		$3.DirectoryNamespaceAssociation = PrefixedHierarchical
+		$3.ResourceNamePolicy = FileName
+		$0.StandardHeader = $4
+		$4.Text = 
+		$4.IncludeInNewFiles = True
 	EndGlobalSection
 EndGlobal

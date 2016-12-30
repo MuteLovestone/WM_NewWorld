@@ -84,6 +84,15 @@ namespace System.Xml
             byte a = node [ "A" ].ConvertToByte ();
             return new Color ( r, g, b, a );
         }
+
+        public static string GetText( this XmlNode node )
+        {
+            string text = node.InnerText;
+            if ( text == null )
+                return "";
+            else
+                return text;
+        }
         //TODO: Add ConvertTo(ValueType) when need to read values from node
     }
 }
