@@ -1,22 +1,23 @@
 ﻿using System;
+using System.Threading;
 using Microsoft.Xna.Framework;
 using InMan = WMNW.Core.InstanceManager;
+using WMNW.Systems;
+using WMNW.Core.GraphicX.Screen;
+using WMNW.GameScreens;
 
 namespace WMNW
 {
-    //TASK: Add Sulex engine stuff to WMNW.Core
-    public class CoreGame:Game
+    public class CoreGame:WMNW.Core.GameBase
     {
         #region Fields
 
         /// <summary>
-        /// The graphics.
-        /// </summary>
-        private GraphicsDeviceManager _graphics;
-        /// <summary>
         /// The instance.
         /// </summary>
         private static CoreGame _instance;
+
+        private static ConfigManager _configManager;
 
         #endregion
 
@@ -29,8 +30,9 @@ namespace WMNW
         {
             InMan.CheckInstance ( _instance, "Core Game", true );
             _instance = this;
-            _graphics = new GraphicsDeviceManager ( this );
-            Content.RootDirectory = "Content";
+            _configManager = new ConfigManager ();
+            IsMouseVisible = true;
+            Window.Title = ConfigManager.GameTitle;
         }
 
         #endregion
@@ -78,6 +80,36 @@ namespace WMNW
             base.LoadContent ();
         }
 
+        protected override void Initialize()
+        {
+            base.Initialize ();
+            UpdateScreenSize ();
+            InitalizeScreens ();
+        }
+
+        #endregion
+
+        #region Private Logic
+
+        public void UpdateScreenSize()
+        {
+            _graphics.IsFullScreen = ConfigManager.Screen.FullScreen;
+            _graphics.PreferredBackBufferHeight = ConfigManager.Screen.Height;
+            _graphics.PreferredBackBufferWidth = ConfigManager.Screen.Width;
+            _graphics.ApplyChanges ();
+        }
+
+        public void InitalizeScreens()
+        {
+            ScreenHandler.Add ( new LoadingScreen ( this ) );
+            ChangeToStartingScreen ();
+        }
+
+        private void ChangeToStartingScreen()
+        {
+            ScreenHandler.Change ( "Loading" );
+        }
+
         #endregion
 
         #region Events Logic
@@ -90,7 +122,9 @@ namespace WMNW
         protected override void OnExiting( object sender, EventArgs args )
         {
             base.OnExiting ( sender, args );
-            //Environment.Exit ( 0 );
+            ConfigManager.Save ();
+            base.Exit ();
+
         }
 
         #endregion

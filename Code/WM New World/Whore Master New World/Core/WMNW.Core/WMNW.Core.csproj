@@ -14,18 +14,18 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;</DefineConstants>
+    <DefineConstants>DEBUG;LINUX</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>full</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
+    <DefineConstants>LINUX</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -40,6 +40,8 @@
     <Reference Include="OpenTK">
       <HintPath>..\..\packages\MonoGame.Framework.DesktopGL.3.5.1.1679\lib\net40\OpenTK.dll</HintPath>
     </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -47,10 +49,61 @@
     <Compile Include="InstanceManager.cs" />
     <Compile Include="PathManager.cs" />
     <Compile Include="Loading\XmlSettingManager.cs" />
+    <Compile Include="Input\Devices\Interfaces\IGamePad.cs" />
+    <Compile Include="Input\Devices\Interfaces\IInputDevice.cs" />
+    <Compile Include="Input\Devices\Interfaces\IMouse.cs" />
+    <Compile Include="Input\Devices\Interfaces\IKeyboard.cs" />
+    <Compile Include="Input\Classes\CollectionHelper.cs" />
+    <Compile Include="Input\Classes\MouseButtons.cs" />
+    <Compile Include="Input\Classes\ExtendedPlayerIndex.cs" />
+    <Compile Include="Input\Classes\ExtendedGamePadStateBuilders.cs" />
+    <Compile Include="Input\Classes\Extended.cs" />
+    <Compile Include="Input\Classes\ExtendedGamePadState.cs" />
+    <Compile Include="Input\Classes\ControlMouse.cs" />
+    <Compile Include="Input\Classes\ControlKeyboard.cs" />
+    <Compile Include="Input\Manager\IInputService.cs" />
+    <Compile Include="Input\Manager\InputManager.cs" />
+    <Compile Include="Input\Devices\Generic\GamePad.cs" />
+    <Compile Include="Input\Devices\Generic\NoGamePad.cs" />
+    <Compile Include="Input\Devices\Generic\PcXboxGamePad.cs" />
+    <Compile Include="Input\Devices\Generic\NoKeyboard.cs" />
+    <Compile Include="Input\Devices\Generic\PcKeyboard.cs" />
+    <Compile Include="Input\Devices\Generic\NoMouse.cs" />
+    <Compile Include="Input\Devices\Generic\PCMouse.cs" />
+    <Compile Include="GameBase.cs" />
+    <Compile Include="GraphicX\GraphicsHandler.cs" />
+    <Compile Include="GraphicX\Screen\ScreenBase.cs" />
+    <Compile Include="GraphicX\Screen\ScreenHandler.cs" />
+    <Compile Include="GUI\Gui.cs" />
+    <Compile Include="GUI\Controls\ControlBase.cs" />
+    <Compile Include="GUI\Controls\ButtonState.cs" />
+    <Compile Include="GUI\Controls\Button.cs" />
+    <Compile Include="GUI\Controls\CheckBox.cs" />
+    <Compile Include="GUI\Controls\ComboBox.cs" />
+    <Compile Include="GUI\Controls\Label.cs" />
+    <Compile Include="GUI\Controls\MultiLineBox.cs" />
+    <Compile Include="GUI\Controls\PictureBox.cs" />
+    <Compile Include="GUI\Controls\ProgressBar.cs" />
+    <Compile Include="GUI\Controls\RadioButton.cs" />
+    <Compile Include="GUI\Controls\SortableDataGridView.cs" />
+    <Compile Include="GUI\Controls\TextBox.cs" />
+    <Compile Include="GUI\Controls\TrackBar.cs" />
+    <Compile Include="GUI\Controls\IntTextBox.cs" />
+    <Compile Include="GUI\Controls\ScreenBack.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="Loading\" />
+    <Folder Include="Input\" />
+    <Folder Include="Input\Devices\" />
+    <Folder Include="Input\Devices\Interfaces\" />
+    <Folder Include="Input\Classes\" />
+    <Folder Include="Input\Manager\" />
+    <Folder Include="Input\Devices\Generic\" />
+    <Folder Include="GraphicX\" />
+    <Folder Include="GraphicX\Screen\" />
+    <Folder Include="GUI\" />
+    <Folder Include="GUI\Controls\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

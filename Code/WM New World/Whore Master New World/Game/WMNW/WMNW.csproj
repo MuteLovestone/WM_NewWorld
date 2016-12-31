@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -9,6 +10,7 @@
     <AssemblyName>Whore Master: New World</AssemblyName>
     <StartupObject>WMNW.GameApplication</StartupObject>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <MonoGamePlatform>DesktopGL</MonoGamePlatform>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -19,6 +21,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
+    <NoWarn>CS0414</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -51,8 +54,16 @@
     <Compile Include="GameData\Player.cs" />
     <Compile Include="Systems\MastersManager.cs" />
     <Compile Include="GameData\Master.cs" />
+    <Compile Include="GameScreens\MainMenu.cs" />
+    <Compile Include="Config\ScreenConfig.cs" />
+    <Compile Include="Systems\ConfigManager.cs" />
+    <Compile Include="GameScreens\OptionsScreen.cs" />
+    <Compile Include="GameScreens\LoadGameScreen.cs" />
+    <Compile Include="GameScreens\NewGameScreen.cs" />
+    <Compile Include="GameScreens\LoadingScreen.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
   <ItemGroup>
     <ProjectReference Include="..\..\Core\WMNW.Core\WMNW.Core.csproj">
       <Project>{FC3526C0-F5A4-4A02-BA6E-755387784665}</Project>
@@ -128,5 +139,11 @@
     <Folder Include="Systems\" />
     <Folder Include="GameData\" />
     <Folder Include="GameData\Details\" />
+    <Folder Include="GameScreens\" />
+    <Folder Include="Config\" />
+    <Folder Include="Content\" />
+  </ItemGroup>
+  <ItemGroup>
+    <MonoGameContentReference Include="Content\GameContent.mgcb" />
   </ItemGroup>
 </Project>

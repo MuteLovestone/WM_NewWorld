@@ -48,7 +48,7 @@ namespace WMNW.Systems
         /// <returns>The player.</returns>
         public static Player GetPlayer()
         {
-            return _mastersList [ 0 ];
+            return ( Player )_mastersList [ 0 ];
         }
 
         /// <summary>

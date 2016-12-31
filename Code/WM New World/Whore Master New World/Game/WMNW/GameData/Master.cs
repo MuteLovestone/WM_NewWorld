@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Xml;
 
 namespace WMNW.GameData
 {
@@ -30,6 +31,12 @@ namespace WMNW.GameData
 
         public Master ()
         {
+        }
+
+        public Master ( XmlNode node )
+            : base ( node )
+        {
+            
         }
 
         #endregion

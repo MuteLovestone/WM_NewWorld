@@ -41,7 +41,7 @@ namespace WMNW
                 Environment.Exit ( 0 );
             }
             System.IO.File.WriteAllText ( PathManager.GetPathInGameFolder ( "/Logs/ErrorLog.txt" ), "Game Finished without Errors" );
-
+            Environment.Exit ( 0 );
         }
 
         #endregion
