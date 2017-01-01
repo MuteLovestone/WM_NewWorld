@@ -9,6 +9,8 @@ namespace WMNW.GameData
         #region Fields
 
         private Naming _name = new Naming ();
+        private Genders _gender = Genders.None;
+        private bool _isSlave = false;
 
         #endregion
 
@@ -62,6 +64,30 @@ namespace WMNW.GameData
             }
         }
 
+        /// <summary>
+        /// Gets the gender.
+        /// </summary>
+        /// <value>The gender.</value>
+        public Genders Gender
+        {
+            get
+            {
+                return _gender;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this instance is free.
+        /// </summary>
+        /// <value><c>true</c> if this instance is free; otherwise, <c>false</c>.</value>
+        public bool IsFree
+        {
+            get
+            {
+                return !_isSlave;
+            }
+        }
+
         #endregion
 
         #region Construct
@@ -91,6 +117,31 @@ namespace WMNW.GameData
             _name.SetName ( f, m, l );
         }
 
+        /// <summary>
+        /// Sets the gender.
+        /// </summary>
+        /// <param name="newGender">New gender.</param>
+        public void SetGender( Genders newGender )
+        {
+            _gender = newGender;
+        }
+
+        /// <summary>
+        /// Sets the slave.
+        /// </summary>
+        public void SetSlave()
+        {
+            _isSlave = true;
+        }
+
+        /// <summary>
+        /// Sets the free.
+        /// </summary>
+        public void SetFree()
+        {
+            _isSlave = false;
+        }
+
         #endregion
 
         #region Save/Load Logic
@@ -102,6 +153,7 @@ namespace WMNW.GameData
         public virtual void Save( XmlWriter wr )
         {
             _name.Save ( wr );
+            wr.WriteElementString ( "Gender", ( int )_gender );
         }
 
         /// <summary>
@@ -111,6 +163,7 @@ namespace WMNW.GameData
         public virtual void Load( XmlNode node )
         {
             _name.Load ( node );
+            _gender = ( Genders )node [ "Gender" ].ConverToInt ();
         }
 
         #endregion

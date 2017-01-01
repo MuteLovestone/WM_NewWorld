@@ -18,7 +18,7 @@ namespace WMNW.Core.GUI.Controls
 
         #region Consturctor
 
-        public ComboBox ( string font, string text, Color color, Vector2 position, int width, List<Button> buttons )
+        public ComboBox ( string font, string text, Color color, Vector2 position, Vector2 size, List<Button> buttons )
         {
             Font = font;
             Text = text;
@@ -30,11 +30,11 @@ namespace WMNW.Core.GUI.Controls
             //Add all buttons to chilren
             foreach ( var btn in buttons )
                 Children.Add ( btn );
-
-            Size = new Vector2 ( width, 0 );
+            Centered = true;
+            Size = size;
         }
 
-        public ComboBox ( string font, Color color, Vector2 position, int width, IList<Button> buttons )
+        public ComboBox ( string font, Color color, Vector2 position, Vector2 size, IList<Button> buttons )
         {
             Font = font;
             TextColor = color;
@@ -46,7 +46,8 @@ namespace WMNW.Core.GUI.Controls
             foreach ( var btn in buttons )
                 Children.Add ( btn );
 
-            Size = new Vector2 ( width, 0 );
+            Centered = true;
+            Size = size;
         }
 
         #endregion
@@ -58,15 +59,18 @@ namespace WMNW.Core.GUI.Controls
             base.Update ( gameTime );
 
             //Mesure our Font to help determine our height
-            Size = new Vector2 ( Size.X,
-                GraphicsHandler.MesureString ( ( ( Button )Children [ 0 ] ).Font, ( ( Button )Children [ 0 ] ).Text ).Y );
+            //Size = Size;
             SelectedBtn.Text = Children [ SelectedItem ].Text;
             SelectedBtn.Size = Size;
             SelectedBtn.Position = Position;
-
+            if ( Centered )
+                SelectedBtn.BuildTextOffset ();
             //Enable all children
             foreach ( var child in Children )
+            {
                 child.Enabled = true;
+                child.Size = Size;
+            }
 
             if ( !Mouse.IsInside ( SelectedBtn.Bounds ) )
             {
@@ -132,6 +136,15 @@ namespace WMNW.Core.GUI.Controls
         {
             if ( IsActive )
                 DrawChildren ( gameTime );
+        }
+
+        public override void ChangeColor( Color? border, Color? background )
+        {
+            base.ChangeColor ( border, background );
+            foreach ( var c in Children )
+            {
+                c.ChangeColor ( border, background );
+            }
         }
 
         #endregion

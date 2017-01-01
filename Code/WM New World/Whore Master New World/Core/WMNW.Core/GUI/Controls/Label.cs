@@ -50,15 +50,7 @@ namespace WMNW.Core.GUI.Controls
 
         }
 
-        public void BuildTextOffset()
-        {
-            if ( Centered && ( TextChanged || FontChanged ) )
-            {
-                TextChanged = false;
-                FontChanged = false;
-                TextOffset = Size / 2 - GraphicsHandler.MesureString ( Font, Text ) / 2;
-            }
-        }
+
 
         #endregion
     }

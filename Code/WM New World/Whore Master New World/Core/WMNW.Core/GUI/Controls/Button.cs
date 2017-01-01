@@ -30,6 +30,7 @@ namespace WMNW.Core.GUI.Controls
             Text = text;
             TextColor = color;
             Centered = true;
+            //BuildTextOffset ();
         }
 
         public Button ( Vector2 position, Vector2 size )
@@ -37,6 +38,7 @@ namespace WMNW.Core.GUI.Controls
             Position = position;
             Size = size;
             Centered = true;
+            BuildTextOffset ();
         }
 
         #endregion
@@ -48,7 +50,12 @@ namespace WMNW.Core.GUI.Controls
             if ( !Enabled )
                 return;
             base.Update ( gameTime );
-            BuildTextOffset ();
+            if ( TextChanged || FontChanged )
+            {
+                BuildTextOffset ();
+                TextChanged = false;
+                FontChanged = false;
+            }
             if ( Selected )
             {
                 if ( Mouse.IsInside ( Bounds ) )
@@ -59,15 +66,6 @@ namespace WMNW.Core.GUI.Controls
             }
         }
 
-        public void BuildTextOffset()
-        {
-            if ( Centered && ( TextChanged || FontChanged ) )
-            {
-                TextChanged = false;
-                FontChanged = false;
-                TextOffset = Size / 2 - GraphicsHandler.MesureString ( Font, Text ) / 2;
-            }
-        }
 
         public override void Draw( GameTime gameTime )
         {

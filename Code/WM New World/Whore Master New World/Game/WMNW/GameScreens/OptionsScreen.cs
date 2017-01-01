@@ -48,6 +48,8 @@ namespace WMNW.GameScreens
             int posY = ConfigManager.Screen.Height - 54;
             Vector2 LabelSize = new Vector2 ( 100, 25 );
             Vector2 IntBoxSize = new Vector2 ( 300, 25 );
+            Vector2 ibOff = new Vector2 ( 5, 2 );
+            Vector2 cbOff = new Vector2 ( 5, 0 );
             #endregion
             #region Background Control
             _background = new ScreenBack ( ScreenSize );
@@ -92,7 +94,7 @@ namespace WMNW.GameScreens
             posX += 102;
             _heightText = new IntTextBox ( "UIFont", ConfigManager.Screen.Height, TextColor, new Vector2 ( posX, posY ), IntBoxSize );
             _heightText.ChangeColor ( BC, BG );
-            _heightText.TextOffset = new Vector2 ( 2, 2 );
+            _heightText.TextOffset = ibOff;
             Gui.Add ( _heightText );
             #endregion
             #region Width Label
@@ -106,7 +108,7 @@ namespace WMNW.GameScreens
             posX += 102;
             _widthText = new IntTextBox ( "UIFont", ConfigManager.Screen.Width, TextColor, new Vector2 ( posX, posY ), IntBoxSize );
             _widthText.ChangeColor ( BC, BG );
-            _widthText.TextOffset = new Vector2 ( 2, 2 );
+            _widthText.TextOffset = ibOff;
             Gui.Add ( _widthText );
             #endregion
             #region FullScreen Box
@@ -115,7 +117,7 @@ namespace WMNW.GameScreens
             _fullscreenBox = new CheckBox ( "UIFont", "FullScreen", TextColor, new Vector2 ( posX, posY ), new Vector2 ( 23, 23 ), IntBoxSize );
             _fullscreenBox.ChangeColor ( BC, BG, Color.Green );
             _fullscreenBox.Checked = ConfigManager.Screen.FullScreen;
-            _fullscreenBox.TextOffset = new Vector2 ( 5, 0 );
+            _fullscreenBox.TextOffset = cbOff;
             Gui.Add ( _fullscreenBox );
             #endregion
         }

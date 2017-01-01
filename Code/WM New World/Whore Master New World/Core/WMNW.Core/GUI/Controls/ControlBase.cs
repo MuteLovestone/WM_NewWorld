@@ -289,12 +289,22 @@ namespace WMNW.Core.GUI.Controls
 
         #region Interfaces
 
+        public void BuildTextOffset()
+        {
+            if ( Centered && ( TextChanged || FontChanged ) )
+            {
+                TextChanged = false;
+                FontChanged = false;
+                TextOffset = Size / 2 - GraphicsHandler.MesureString ( Font, Text ) / 2;
+            }
+        }
+
         /// <summary>
         /// Changes Color of all borders and backgrounds to be the same
         /// </summary>
         /// <param name="border"></param>
         /// <param name="background"></param>
-        public void ChangeColor( Color? border, Color? background )
+        public virtual void ChangeColor( Color? border, Color? background )
         {
             if ( border.HasValue )
             {
