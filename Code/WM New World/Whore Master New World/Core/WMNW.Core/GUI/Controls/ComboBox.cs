@@ -39,7 +39,8 @@ namespace WMNW.Core.GUI.Controls
             Font = font;
             TextColor = color;
             Position = position;
-
+            if ( buttons.Count == 0 )
+                return;
             SelectedBtn = new Button ( font, buttons [ 0 ].Text, color );
 
             //Add all buttons to chilren
@@ -57,7 +58,8 @@ namespace WMNW.Core.GUI.Controls
         public override void Update( GameTime gameTime )
         {
             base.Update ( gameTime );
-
+            if ( Children.Count == 0 )
+                return;
             //Mesure our Font to help determine our height
             //Size = Size;
             SelectedBtn.Text = Children [ SelectedItem ].Text;
@@ -128,7 +130,8 @@ namespace WMNW.Core.GUI.Controls
         public override void Draw( GameTime gameTime )
         {
             base.Draw ( gameTime );
-
+            if ( SelectedBtn == null )
+                return;
             SelectedBtn.Draw ( gameTime );
         }
 

@@ -115,6 +115,8 @@ namespace WMNW.GameScreens
                     ScreenHandler.Add ( new LoadGameScreen ( CoreGame.GetInstance () ) );
                 if ( _functionsCount == 4 )
                     ScreenHandler.Add ( new NewGameScreen () );
+                if ( _functionsCount == 5 )
+                    ScreenHandler.Add ( new BuildingScreen () );
                 _functionsCount++;
             }
         }

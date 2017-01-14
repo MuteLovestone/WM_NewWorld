@@ -10,6 +10,8 @@ namespace WMNW.Core.GraphicX.Screen
     {
         #region Field
 
+        private bool disabled = false;
+
         #endregion
 
         #region Properties
@@ -99,6 +101,16 @@ namespace WMNW.Core.GraphicX.Screen
 
         public new abstract void LoadContent();
 
+        public void DisableUpdate()
+        {
+            disabled = true;
+        }
+
+        public void EnableUpdate()
+        {
+            disabled = false;
+        }
+
         /// <summary>
         /// Method is intended to load anything needed when a screen shows itself
         /// </summary>
@@ -124,6 +136,8 @@ namespace WMNW.Core.GraphicX.Screen
 
         public override void Update( GameTime gameTime )
         {
+            if ( disabled )
+                return;
             Gui.Update ( gameTime );
             base.Update ( gameTime );
         }

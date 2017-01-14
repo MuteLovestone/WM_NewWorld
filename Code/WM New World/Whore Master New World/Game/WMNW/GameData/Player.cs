@@ -17,6 +17,7 @@ namespace WMNW.GameData
 
         public Player ()
         {
+            _gold = 4000;
         }
 
         public Player ( XmlNode node )

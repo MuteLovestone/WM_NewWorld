@@ -18,6 +18,10 @@ namespace WMNW
         private static CoreGame _instance;
 
         private static ConfigManager _configManager;
+        private static MastersManager _masterManager;
+        private static SaveManager _saveManager;
+        private static OverlayManager _overlayManager;
+        private static SelectionManager _selectionManager;
 
         #endregion
 
@@ -33,6 +37,7 @@ namespace WMNW
             _configManager = new ConfigManager ();
             IsMouseVisible = true;
             Window.Title = ConfigManager.GameTitle;
+
         }
 
         #endregion
@@ -61,6 +66,7 @@ namespace WMNW
         {
             GraphicsDevice.Clear ( Color.CornflowerBlue );
             base.Draw ( gameTime );
+            _overlayManager.Draw ( gameTime );
         }
 
         /// <summary>
@@ -70,6 +76,7 @@ namespace WMNW
         protected override void Update( GameTime gameTime )
         {
             base.Update ( gameTime );
+            _overlayManager.Update ( gameTime );
         }
 
         /// <summary>
@@ -83,6 +90,9 @@ namespace WMNW
         protected override void Initialize()
         {
             base.Initialize ();
+            _saveManager = new SaveManager ();
+            _overlayManager = new OverlayManager ();
+            _selectionManager = new SelectionManager ();
             UpdateScreenSize ();
             InitalizeScreens ();
         }
@@ -90,6 +100,11 @@ namespace WMNW
         #endregion
 
         #region Private Logic
+
+        public void NotYetImplimentedMessage()
+        {
+            OverlayManager.ShowMessage ( "This Feature is not yet Implimented.", true );
+        }
 
         public void UpdateScreenSize()
         {
@@ -107,6 +122,7 @@ namespace WMNW
 
         private void ChangeToStartingScreen()
         {
+            MastersManager.Reset ();
             ScreenHandler.Change ( "Loading" );
         }
 

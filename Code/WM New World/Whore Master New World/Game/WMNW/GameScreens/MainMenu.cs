@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using Microsoft.Xna.Framework;
 using WMNW.Core.GraphicX.Screen;
 using WMNW.Core.GUI.Controls;
@@ -57,6 +58,10 @@ namespace WMNW.GameScreens
             _loadGameButton = new Button ( "UIFont", "Load Game", TextColor, new Vector2 ( posX, posY ), buttonSize );
             _loadGameButton.ChangeColor ( BorderColor, BackColor );
             _loadGameButton.MouseClicked += LoadGameButtonClicked;
+            if ( SaveManager.SaveCount () > 0 )
+                _loadGameButton.Enabled = true;
+            else
+                _loadGameButton.Enabled = false;
             Gui.Add ( _loadGameButton );
             #endregion
             #region Options Button
@@ -106,7 +111,9 @@ namespace WMNW.GameScreens
 
         public void LoadGameButtonClicked( object sender, WMMouseEventArgs e )
         {
-            ScreenHandler.Change ( "LoadGame" );
+            Thread b = new Thread ( CoreGame.GetInstance ().NotYetImplimentedMessage );
+            b.Start ();
+            //ScreenHandler.Change ( "LoadGame" );
         }
 
         public void NewGameButtonClicked( object sender, WMMouseEventArgs e )

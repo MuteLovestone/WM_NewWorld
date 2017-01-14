@@ -61,6 +61,32 @@ namespace WMNW.Core
             return ( ReplacePathForSystem ( path ) );
         }
 
+        /// <summary>
+        /// Gets the file path and formats it to the right system separator.
+        /// </summary>
+        /// <returns>The file path.</returns>
+        /// <param name="path">Path.</param>
+        public static string GetFilePath( string path )
+        {
+            string truePath = "";
+            if ( path.Contains ( @"../" ) || path.Contains ( "..\\" ) )
+            {
+                if ( path.Contains ( @"../" ) )
+                {
+                    truePath = GetPathInGameFolder ( "/" + path.Replace ( @"../", "" ) );
+                }
+                else if ( path.Contains ( @"..\\" ) )
+                {
+                    truePath = GetPathInGameFolder ( path.Replace ( "..\\", "" ) );
+                }
+                else
+                {
+                    truePath = GetPathOutsideGameFolder ( "/" + path );
+                }
+            }
+            return truePath;
+        }
+
         #endregion
 
         #region Private Game Logic

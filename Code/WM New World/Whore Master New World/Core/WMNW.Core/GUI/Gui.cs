@@ -99,6 +99,7 @@ namespace WMNW.Core.GUI
 
         public void Update( GameTime gameTime )
         {
+            
             //Do hit test and see if we hit selected control
             if ( !SelectedControl.Selectable || ( !Mouse.IsInside ( SelectedControl.Bounds ) && Mouse.ButtonPressed ( MouseButtons.Left ) ) )
             {
@@ -108,9 +109,16 @@ namespace WMNW.Core.GUI
             }
 
             Controls.OrderBy ( x => x.ZIndex );
-
-            foreach ( var c in Controls )
-                c.Update ( gameTime );
+            if ( Controls.Count == 0 )
+                return;
+            try
+            {
+                foreach ( var c in Controls )
+                    c.Update ( gameTime );
+            }
+            catch
+            {
+            }
         }
 
         public void Draw( GameTime gameTime )

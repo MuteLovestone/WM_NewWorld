@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Xml;
+using Microsoft.Xna.Framework;
 
 namespace WMNW.Config
 {
@@ -74,6 +75,11 @@ namespace WMNW.Config
             _sWidth = 1024;
             _sHeight = 768;
             _sFullScreen = false;
+        }
+
+        public Vector2 GetScreenSize()
+        {
+            return new Vector2 ( _sWidth - 2, _sHeight );
         }
 
         #endregion

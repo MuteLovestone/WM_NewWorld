@@ -11,6 +11,7 @@ namespace WMNW.GameData
         private Naming _name = new Naming ();
         private Genders _gender = Genders.None;
         private bool _isSlave = false;
+        protected long _gold = 0;
 
         #endregion
 
@@ -88,6 +89,18 @@ namespace WMNW.GameData
             }
         }
 
+        public long Gold
+        {
+            get
+            {
+                return _gold;
+            }
+            set
+            {
+                _gold = value;
+            }
+        }
+
         #endregion
 
         #region Construct
@@ -154,6 +167,8 @@ namespace WMNW.GameData
         {
             _name.Save ( wr );
             wr.WriteElementString ( "Gender", ( int )_gender );
+            wr.WriteElementString ( "Gold", _gold );
+            wr.WriteElementString ( "IsSlave", _isSlave );
         }
 
         /// <summary>
@@ -164,6 +179,8 @@ namespace WMNW.GameData
         {
             _name.Load ( node );
             _gender = ( Genders )node [ "Gender" ].ConverToInt ();
+            _gold = node [ "Gold" ].ConvertToLong ();
+            _isSlave = node [ "IsSlave" ].ConvertToBool ();
         }
 
         #endregion

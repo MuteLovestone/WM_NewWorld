@@ -1,6 +1,7 @@
 ﻿using System;
 using WMNW.Core;
 using System.Xml;
+using WMNW.Systems;
 
 namespace WMNW
 {
@@ -17,6 +18,7 @@ namespace WMNW
         /// </summary>
         private static XmlSettingManager _xmlSettingManagerInstance;
         private static CoreGame _coreGameInstance;
+        private static LogManager _logManager;
 
         #endregion
 
@@ -31,16 +33,20 @@ namespace WMNW
             _pathManagerInstance = new PathManager ();
             _xmlSettingManagerInstance = new XmlSettingManager ();
             _coreGameInstance = new CoreGame ();
+            _logManager = new LogManager ();
+            #if !DEBUG
             try
             {
+                #endif
                 _coreGameInstance.Run ();
+                #if !DEBUG
             }
             catch ( Exception e )
             {
-                System.IO.File.WriteAllText ( PathManager.GetPathInGameFolder ( "/Logs/ErrorLog.txt" ), e.ToString () );
-                Environment.Exit ( 0 );
+                LogManager.LogError ( e );
             }
-            System.IO.File.WriteAllText ( PathManager.GetPathInGameFolder ( "/Logs/ErrorLog.txt" ), "Game Finished without Errors" );
+            #endif
+            _logManager.SaveLogs ();
             Environment.Exit ( 0 );
         }
 

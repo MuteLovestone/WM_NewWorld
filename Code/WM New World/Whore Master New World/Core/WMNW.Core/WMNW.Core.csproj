@@ -90,6 +90,7 @@
     <Compile Include="GUI\Controls\TrackBar.cs" />
     <Compile Include="GUI\Controls\IntTextBox.cs" />
     <Compile Include="GUI\Controls\ScreenBack.cs" />
+    <Compile Include="GUI\Controls\ButtonList.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

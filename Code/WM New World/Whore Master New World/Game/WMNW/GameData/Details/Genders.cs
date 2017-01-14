@@ -6,7 +6,8 @@ namespace WMNW.GameData.Details
     {
         Female,
         None,
-        Male
+        Male,
+        Futa
     }
 }
 

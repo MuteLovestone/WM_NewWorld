@@ -13,6 +13,8 @@ namespace WMNW.Systems
 
         private static ConfigManager _instance;
         private static ScreenConfig _screen;
+        private static PathsConfig _paths;
+        private static LogConfig _logs;
         private const string _configPath = "/Content/Config/Settings.Config";
         public const string GameTitle = "Whore Master: New World";
 
@@ -28,6 +30,22 @@ namespace WMNW.Systems
             }
         }
 
+        public static PathsConfig Paths
+        {
+            get
+            {
+                return _paths;
+            }
+        }
+
+        public static LogConfig Debug
+        {
+            get
+            {
+                return _logs;
+            }
+        }
+
         #endregion
 
         #region Construct
@@ -37,6 +55,9 @@ namespace WMNW.Systems
             InMan.CheckInstance ( _instance, "Config Manager", true );
             _instance = this;
             _screen = new ScreenConfig ();
+            _paths = new PathsConfig ();
+
+            _logs = new LogConfig ();
             if ( ConfigFileFound () )
                 LoadConfig ();
             else
@@ -55,6 +76,8 @@ namespace WMNW.Systems
         public static void DefaultAll()
         {
             _screen.Default ();
+            _paths.Default ();
+            _logs.Reset ();
         }
 
         #endregion
@@ -75,6 +98,11 @@ namespace WMNW.Systems
             string configFile = PathMan.GetPathInGameFolder ( _configPath );
             XmlDocument doc = XmlSettingManager.GetXmlDocforFile ( configFile );
             _screen.Load ( doc [ "Settings" ] );
+            _paths.Load ( doc [ "Settings" ] );
+
+            _logs.Load ( doc [ "Settings" ] );
+            if ( Debug.LogLoad )
+                LogManager.LogLoad ( "Settings.Config" );
         }
 
         private static void SaveConfig()
@@ -83,9 +111,14 @@ namespace WMNW.Systems
             XmlWriter wr = XmlSettingManager.CreateXmlWriter ( configFile );
             wr.WriteStartElement ( "Settings" );
             _screen.Save ( wr );
+            _paths.Save ( wr );
+
+            _logs.Save ( wr );
             wr.WriteEndElement ();
             wr.Flush ();
             wr.Close ();
+            if ( Debug.LogLoad )
+                LogManager.LogSave ( "Settings.Config" );
         }
 
         #endregion

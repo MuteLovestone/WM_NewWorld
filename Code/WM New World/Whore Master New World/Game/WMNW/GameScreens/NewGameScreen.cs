@@ -5,6 +5,7 @@ using WMNW.Core.GraphicX;
 using WMNW.Core.GraphicX.Screen;
 using WMNW.Core.GUI.Controls;
 using WMNW.Systems;
+using Player = WMNW.GameData.Player;
 
 namespace WMNW.GameScreens
 {
@@ -39,15 +40,37 @@ namespace WMNW.GameScreens
 
         public override void DisposeOnHide()
         {
+            if ( Gui != null )
+            {
+                if ( Gui.Controls != null )
+                {
+                    Gui.Controls.Clear ();
+                    Gui.SelectedControl = null;
+                }
+            }
             base.DisposeOnHide ();
             _background = null;
             _backButton = null;
             _acceptButton = null;
+            _fnText = null;
+            _fnLabel = null;
+            _mnText = null;
+            _mnLabel = null;
+            _lnText = null;
+            _lnLabel = null;
+            if ( _genderBox != null )
+            {
+                _genderBox.SelectedBtn = null;
+                _genderBox.Children.Clear ();
+            }
+            _genderBox = null;
+            _genderLabel = null;
         }
 
         public override void LoadOnShow()
         {
             base.LoadOnShow ();
+            MastersManager.Reset ();
             #region Set Up Variables
             Vector2 backgroundSize = new Vector2 ( Systems.ConfigManager.Screen.Width - 2, Systems.ConfigManager.Screen.Height );
             Color BC = Color.Gold;
@@ -107,6 +130,7 @@ namespace WMNW.GameScreens
             List<Button> _gender = new List<Button> ();
             _gender.Add ( new Button ( font, "Male", TC ) );
             _gender.Add ( new Button ( font, "Female", TC ) );
+            _gender.Add ( new Button ( font, "Futa", TC ) );
             #endregion
             posx += 102;
             _genderBox = new ComboBox ( font, TC, new Vector2 ( posx, posy ), lblSize, _gender );
@@ -114,6 +138,7 @@ namespace WMNW.GameScreens
             _genderBox.SelectedEvent += GenderBoxSelectionChanged;
             _genderBox.Size = lblSize;
             Gui.Add ( _genderBox );
+            _gender = null;
             #endregion
             #region Middle Name Label
             posx = 4;
@@ -167,8 +192,15 @@ namespace WMNW.GameScreens
             MastersManager.GetPlayer ().SetName ( _fnText.Text, _mnText.Text, _lnText.Text );
             if ( _genderBox.SelectedBtn.Text == "Male" )
                 MastersManager.GetPlayer ().SetGender ( WMNW.GameData.Details.Genders.Male );
-            else
+            else if ( _genderBox.SelectedBtn.Text == "Female" )
                 MastersManager.GetPlayer ().SetGender ( WMNW.GameData.Details.Genders.Female );
+            else
+                MastersManager.GetPlayer ().SetGender ( WMNW.GameData.Details.Genders.Futa );
+            SelectionManager.SelectMaster ( 0 );
+            SelectionManager.SelectBuilding ( 0 );
+            SelectionManager.SelectWorker ( 0 );
+            MastersManager.GetPlayer ().AddBuilding ( new WMNW.GameData.Buildings.Building ( "Home", WMNW.GameData.Buildings.BuildingType.House ) );
+            MastersManager.GetPlayer ().AddBuilding ( new WMNW.GameData.Buildings.Building ( "Brothel", WMNW.GameData.Buildings.BuildingType.Brothel ) );
             ScreenHandler.Change ( "Building" );
         }
 

@@ -19,6 +19,21 @@ namespace System.Xml
             wr.WriteElementString ( name, data.ToString () );
         }
 
+        public static void WriteElementString( this XmlWriter wr, string name, bool value )
+        {
+            wr.WriteElementString ( name, value.ToString ().ToLower () );
+        }
+
+        public static void WriteElementString( this XmlWriter wr, string name, Color col )
+        {
+            wr.WriteStartElement ( name );
+            wr.WriteElementString ( "R", col.R );
+            wr.WriteElementString ( "G", col.G );
+            wr.WriteElementString ( "B", col.B );
+            wr.WriteElementString ( "A", col.A );
+            wr.WriteEndElement ();
+        }
+
         public static int ConverToInt( this XmlNode node )
         {
             try
@@ -33,6 +48,8 @@ namespace System.Xml
 
         public static bool ConvertToBool( this XmlNode node )
         {
+            if ( node == null )
+                return false;
             string nodeText = node.InnerText.ToLower ();
             if ( nodeText == "true" )
                 return true;

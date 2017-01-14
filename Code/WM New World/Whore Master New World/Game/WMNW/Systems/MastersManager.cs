@@ -2,6 +2,7 @@
 using WMNW.GameData;
 using System.Collections.Generic;
 using System.Xml;
+using System.Linq;
 using InMan = WMNW.Core.InstanceManager;
 
 namespace WMNW.Systems
@@ -58,7 +59,7 @@ namespace WMNW.Systems
         /// <param name="id">Identifier.</param>
         public static Master GetMaster( int id )
         {
-            if ( id >= _mastersList.Count - 1 )
+            if ( id > _mastersList.Count - 1 )
                 return null;
             if ( id <= -1 )
                 return null;
@@ -93,8 +94,27 @@ namespace WMNW.Systems
         /// </summary>
         public static void Reset()
         {
+            if ( _mastersList == null )
+                _mastersList = new List<Master> ();
             _mastersList.Clear ();
             AddPlayer ( new Player () );
+        }
+
+        public static void UpdatePlayer( Player play )
+        {
+            _mastersList [ 0 ] = play;
+        }
+
+        public static void UpdateMaster( Master mst, int id )
+        {
+            if ( id == 0 )
+            {
+                UpdatePlayer ( ( Player )mst );
+            }
+            else
+            {
+                _mastersList [ id ] = mst;
+            }
         }
 
         #endregion

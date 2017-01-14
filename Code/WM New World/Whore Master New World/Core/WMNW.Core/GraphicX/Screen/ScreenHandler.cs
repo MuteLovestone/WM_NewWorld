@@ -18,6 +18,7 @@ namespace WMNW.Core.GraphicX.Screen
         List<ScreenBase> _screens = null;
 
         readonly Stack<ScreenBase> _gameScreens = new Stack<ScreenBase> ();
+        private static bool IsUpdateDisabled = false;
 
         #endregion
 
@@ -154,6 +155,30 @@ namespace WMNW.Core.GraphicX.Screen
         public static ScreenBase GetScreen( string name )
         {
             return Instance._screens.FirstOrDefault ( s => s.Name == name );
+        }
+
+        public static void PauseUpdate()
+        {
+            IsUpdateDisabled = true;
+            CurrentScreen.DisableUpdate ();
+        }
+
+        public static void ResumeUpdate()
+        {
+            IsUpdateDisabled = false;
+            CurrentScreen.EnableUpdate ();
+        }
+
+        public override void Update( GameTime gameTime )
+        {
+            if ( IsUpdateDisabled )
+                return;
+            base.Update ( gameTime );
+        }
+
+        public override void Draw( GameTime gameTime )
+        {
+            base.Draw ( gameTime );
         }
 
         #endregion
