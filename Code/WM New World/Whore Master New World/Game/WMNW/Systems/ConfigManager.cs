@@ -7,7 +7,7 @@ using PathMan = WMNW.Core.PathManager;
 
 namespace WMNW.Systems
 {
-    public class ConfigManager
+    public sealed class ConfigManager
     {
         #region Fields
 

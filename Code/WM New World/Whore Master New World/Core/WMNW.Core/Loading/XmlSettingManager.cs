@@ -7,7 +7,7 @@ namespace System.Xml
     /// <summary>
     /// This class is used to manage and give short cuts to loading and writing xml files
     /// </summary>
-    public class XmlSettingManager
+    public sealed class XmlSettingManager
     {
         #region Fields
 

@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace WMNW.Core.GraphicX.Screen
 {
-    public class ScreenHandler : DrawableGameComponent
+    public sealed class ScreenHandler : DrawableGameComponent
     {
         #region Events
 
@@ -172,7 +172,10 @@ namespace WMNW.Core.GraphicX.Screen
         public override void Update( GameTime gameTime )
         {
             if ( IsUpdateDisabled )
+            {
+                PauseUpdate ();
                 return;
+            }
             base.Update ( gameTime );
         }
 

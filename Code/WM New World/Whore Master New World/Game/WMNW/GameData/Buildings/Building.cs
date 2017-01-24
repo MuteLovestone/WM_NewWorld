@@ -222,6 +222,7 @@ namespace WMNW.GameData.Buildings
             BuildingJobs bi = new BuildingJobs ();
             if ( buildingType == BuildingType.House.ToString () )
             {
+                #region House
                 RoomJobs rooms = new RoomJobs ( "House" );
                 rooms.Jobs.Add ( new Job ( "Free Time", "JobFreeTime" ) );
                 rooms.Jobs.Add ( new Job ( "Head Girl", "JobHeadGirl" ) );
@@ -230,6 +231,8 @@ namespace WMNW.GameData.Buildings
                 rooms.Jobs.Add ( new Job ( "House Cook", "JobHouseCook" ) );
                 rooms.Jobs.Add ( new Job ( "Clean House", "JobHouseMaid" ) );
                 bi.Rooms.Add ( rooms );
+                #endregion
+                #region Training
                 rooms = new RoomJobs ( "Training" );
                 rooms.Jobs.Add ( new Job ( "Personal Training", "JobPersonalTraining" ) );
                 rooms.Jobs.Add ( new Job ( "Fake Orgasm Expert", "JobFakeOrgasm" ) );
@@ -238,6 +241,7 @@ namespace WMNW.GameData.Buildings
                 rooms.Jobs.Add ( new Job ( "SO Lesbian", "JobSOLesbian" ) );
                 rooms.Jobs.Add ( new Job ( "House Pet", "Job House Pet" ) );
                 bi.Rooms.Add ( rooms );
+                #endregion
             }
             else if ( buildingType == BuildingType.Brothel.ToString () )
             {
@@ -257,15 +261,38 @@ namespace WMNW.GameData.Buildings
                 #endregion
                 #region Bar
                 RoomJobs bar = new RoomJobs ( "Bar" );
+                bar.Jobs.Add ( new Job ( "Bartender", "JobBarTender" ) );
+                bar.Jobs.Add ( new Job ( "Waitress", "JobBarWait" ) );
+                bar.Jobs.Add ( new Job ( "Singer", "JobSinger" ) );
+                bar.Jobs.Add ( new Job ( "Piano", "JobPiano" ) );
+                bar.Jobs.Add ( new Job ( "Escort", "JobBarEscort" ) );
+                bar.Jobs.Add ( new Job ( "Bar Cook", "JobBarCook" ) );
+                bi.Rooms.Add ( bar );
                 #endregion
                 #region Gamble
                 RoomJobs gamble = new RoomJobs ( "Gambling Hall" );
+                gamble.Jobs.Add ( new Job ( "Game Dealer", "JobGHDealer" ) );
+                gamble.Jobs.Add ( new Job ( "Entertainer", "JobGHEntertainer" ) );
+                gamble.Jobs.Add ( new Job ( "XXX Entertainer", "JobXXXEntertainer" ) );
+                gamble.Jobs.Add ( new Job ( "Hall Whore", "JobHallWhore" ) );
+                bi.Rooms.Add ( gamble );
                 #endregion
                 #region Strip Club
                 RoomJobs StripClub = new RoomJobs ( "Strip Club" );
+                StripClub.Jobs.Add ( new Job ( "Strip Club Barmaid", "JobSCBarmaid" ) );
+                StripClub.Jobs.Add ( new Job ( "Strip Club Waitress", "JobSCWaitress" ) );
+                StripClub.Jobs.Add ( new Job ( "Strip Club Stripper", "JobSCStripper" ) );
+                StripClub.Jobs.Add ( new Job ( "Strip Club Whore", "JobSCWhore" ) );
+                bi.Rooms.Add ( StripClub );
                 #endregion
                 #region Brothel
                 RoomJobs Brothel = new RoomJobs ( "Brothel" );
+                Brothel.Jobs.Add ( new Job ( "Masseuse", "JobMasseuse" ) );
+                Brothel.Jobs.Add ( new Job ( "Brothel Stripper", "JobBrothelStripper" ) );
+                Brothel.Jobs.Add ( new Job ( "Peep Show", "JobPeepShow" ) );
+                Brothel.Jobs.Add ( new Job ( "Brothel Whore", "JobBrothelWhore" ) );
+                Brothel.Jobs.Add ( new Job ( "Street Whore", "JobStreetWhore" ) );
+                bi.Rooms.Add ( Brothel );
                 #endregion
             }
             return bi;

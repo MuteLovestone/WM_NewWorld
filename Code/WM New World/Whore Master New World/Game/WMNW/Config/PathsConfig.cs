@@ -70,6 +70,10 @@ namespace WMNW.Config
             }
             _savePath = pNode [ "SavePath" ].InnerText;
             _workersPath = pNode [ "WorkersPath" ].InnerText;
+            if ( SavePath == " " || SavePath == "" )
+                _savePath = @"../Saves/";
+            if ( _workersPath == "" || _workersPath == " " )
+                _workersPath = @"../Content/Workers/";
         }
 
         public void Save( XmlWriter wr )

@@ -77,7 +77,7 @@ namespace WMNW.Core
                 }
                 else if ( path.Contains ( @"..\\" ) )
                 {
-                    truePath = GetPathInGameFolder ( path.Replace ( "..\\", "" ) );
+                    truePath = GetPathInGameFolder ( path.Replace ( @"..\", "" ) );
                 }
                 else
                 {

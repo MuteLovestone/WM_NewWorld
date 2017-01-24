@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Threading;
 using Microsoft.Xna.Framework;
 using WMNW.Core.GraphicX;
@@ -27,6 +28,7 @@ namespace WMNW.GameScreens
         private Button _endTurnButton;
         private Button _manageBuildingButton;
         private Button _viewBuildingsButton;
+        private ButtonList _buttonsList;
 
         #endregion
 
@@ -130,27 +132,24 @@ namespace WMNW.GameScreens
 
         private void SaveButtonClicked( object sender, WMMouseEventArgs e )
         {
-            Thread b = new Thread ( SaveGame );
-            b.Start ();
+            SaveGame ();
         }
 
-        private void QuitGameButtonClicked( object sender, WMMouseEventArgs e )
+        private async void QuitGameButtonClicked( object sender, WMMouseEventArgs e )
         {
-            Thread b = new Thread ( QuitGameThread );
-            b.Start ();
+            Thread quitThread = new Thread ( QuitGameThread );
+            quitThread.Start ();
         }
 
         void _endTurnButton_MouseClicked( object sender, WMMouseEventArgs e )
         {
-            Thread b = new Thread ( CoreGame.GetInstance ().NotYetImplimentedMessage );
-            b.Start ();
+            CoreGame.GetInstance ().NotYetImplimentedMessage ();
             //ScreenHandler.Change ( "EndTurnLoading" );
         }
 
         void _visitTownButton_MouseClicked( object sender, WMMouseEventArgs e )
         {
-            Thread b = new Thread ( CoreGame.GetInstance ().NotYetImplimentedMessage );
-            b.Start ();
+            CoreGame.GetInstance ().NotYetImplimentedMessage (); 
             //ScreenHandler.Change ( "Town" );
         }
 
@@ -164,22 +163,32 @@ namespace WMNW.GameScreens
             UIMan.ShowMessage ( "Game Saved", true );
         }
 
-        private void QuitGameThread()
+        private async void QuitGameThread()
         {
             List<string> opts = new List<string> ();
             opts.Add ( "Yes" );
+            opts.Add ( "Cancel" );
             opts.Add ( "No" );
-            if ( UIMan.ShowOptions ( "Would you Like to Save Your Game", opts ) == "Yes" )
+            string opt = await UIMan.ShowOptions ( "Would you Like to Save Your Game? ", opts );
+            if ( opt == "Yes" )
             {
                 SaveGame ();
+                ScreenHandler.Change ( "MainMenu" );
             }
-            ScreenHandler.Change ( "MainMenu" );
+            else if ( opt == "Cancel" )
+            {
+                
+            }
+            else
+            {
+                ScreenHandler.Change ( "MainMenu" );
+            }
         }
 
         private string GenerateDetails()
         {
             int masterId = slcMan.SelectedMasterID ();
-            Master mast = MMan.GetMaster ( slcMan.SelectedMasterID () );
+            Master mast = MMan.GetMaster ( masterId );
             string details = "";
             details += "Owners Name:\n";
             details += mast.FullName + "\n";

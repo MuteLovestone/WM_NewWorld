@@ -5,11 +5,12 @@ using WMNW.Core.GUI;
 using WMNW.Core.GUI.Controls;
 using WMNW.Core.GraphicX.Screen;
 using WMNW.Core.GraphicX;
+using System.Threading.Tasks;
 using IMan = WMNW.Core.InstanceManager;
 
 namespace WMNW.Systems
 {
-    public class OverlayManager
+    public sealed class OverlayManager:IDisposable
     {
         #region Fields
 
@@ -21,6 +22,9 @@ namespace WMNW.Systems
         private static bool OptionsShowing = false;
         private static bool MessageShowing = false;
         private static Label _achiveLabel;
+        private static Label _messageBox;
+        private static string _selectedOption1;
+        private static OptionsBox _optBox;
 
         #endregion
 
@@ -43,20 +47,35 @@ namespace WMNW.Systems
 
         #region Logic
 
-        public static string ShowOptions( string message, List<string> options )
+        public static async Task<string> ShowOptions( string message, List<string> options )
         {
             //TODO: Make Functional
             ScreenHandler.PauseUpdate ();
+            waitingForInput = true;
             isShowing = true;
+            _optBox = new OptionsBox ( new Vector2 ( ConfigManager.Screen.Width, ConfigManager.Screen.Height ),
+                options,
+                Color.White,
+                message );
+            _optBox.OnOptionSelected += _optBox_OnOptionSelected;
+            _optBox.ChangeColor ( Color.Gold, Color.Black );
+            gui.Add ( _optBox );
             do
             {
-                waitingForInput = false;
             }
             while( waitingForInput );
             ScreenHandler.ResumeUpdate ();
             isShowing = false;
-            return options [ 0 ];
+            return _selectedOption1;
         }
+
+        static void _optBox_OnOptionSelected( object sender, OptionSelectedEvent e )
+        {
+            waitingForInput = false;
+            _selectedOption1 = e.Option;
+            gui.Remove ( _optBox );
+        }
+
 
         public static void ShowMessage( string message, bool center )
         {
@@ -64,30 +83,41 @@ namespace WMNW.Systems
             int posx = 0;
             int posy = 0;
             Vector2 lblsize = GraphicsHandler.MesureString ( "UIFont", message ) + new Vector2 ( 100, 50 );
+            if ( lblsize.X >= ConfigManager.Screen.Width - 4 )
+            {
+                string tempMessage = message;
+                do
+                {
+                    string message1 = message.Substring ( 0, tempMessage.LastIndexOf ( " " ) + 1 );
+                    string message2 = message.Replace ( message1, "" );
+                    string msgTemp = message1 + "\n" + message2;
+                    Vector2 tempAddon = new Vector2 ( 100, 50 );
+                    Vector2 newSize = GraphicsHandler.MesureString ( "UIFont", msgTemp ) + tempAddon;
+                    if ( newSize.X < ConfigManager.Screen.Width - 4 )
+                    {
+                        message = msgTemp;
+                        lblsize = newSize;
+                    }
+                }
+                while ( lblsize.X >= ConfigManager.Screen.Width - 4 );
+            }
             posx = ConfigManager.Screen.Width / 2 - ( int )lblsize.X / 2;
             posy = ConfigManager.Screen.Height / 2 - ( int )lblsize.Y / 2;
             #endregion
-            Label b = new Label ( "UIFont", message, Color.White, new Vector2 ( posx, posy ), lblsize );
-            b.MouseClicked += MessageLabelClicked;
-            b.ChangeColor ( Color.Gold, Color.Black );
-            b.Centered = center;
-            b.ZIndex = 99999;
-            gui.Add ( b );
+            // Create Message box
+            _messageBox = new Label ( "UIFont", message, Color.White, new Vector2 ( posx, posy ), lblsize );
+            _messageBox.MouseClicked += MessageLabelClicked;
+            _messageBox.ChangeColor ( Color.Gold, Color.Black );
+            _messageBox.Centered = center;
+            _messageBox.ZIndex = 99999;
+            // Pause Screen Updating
+            ScreenHandler.PauseUpdate ();
+            // Add Message Box
+            gui.Add ( _messageBox );
+            // Set Options
             isShowing = true;
             MessageShowing = true;
             waitingForInput = true;
-            ScreenHandler.PauseUpdate ();
-            do
-            {
-                
-            }
-            while( waitingForInput );
-            b.MouseClicked -= MessageLabelClicked;
-            gui.Remove ( b );
-            System.Threading.Thread.Sleep ( 100 );
-            ScreenHandler.ResumeUpdate ();
-            b = null;
-            return;
         }
 
         public static void ShowAchievement( string acievementName )
@@ -99,14 +129,19 @@ namespace WMNW.Systems
         public void Update( GameTime gameTime )
         {
             if ( !isShowing )
+            {
+                ScreenHandler.ResumeUpdate ();
                 return;
+            }
             gui.Update ( gameTime );
         }
 
         public void Draw( GameTime gameTime )
         {
             if ( !isShowing )
+            {
                 return;
+            }
             GraphicsHandler.Begin ();
             gui.Draw ( gameTime );
             GraphicsHandler.End ();
@@ -118,10 +153,11 @@ namespace WMNW.Systems
 
         private static void MessageLabelClicked( object sender, WMMouseEventArgs e )
         {
+            ( ( Label )sender ).Enabled = false;
+            gui.Controls.Clear ();
             MessageShowing = false;
             waitingForInput = false;
             isShowing = false;
-            ( ( Label )sender ).Enabled = false;
         }
 
         #endregion
@@ -160,6 +196,19 @@ namespace WMNW.Systems
 
             #endregion
 
+        }
+
+        #endregion
+
+        #region Public Logic
+
+        public void Dispose()
+        {
+            _instance = null;
+            gui = null;
+            achivementOrders = null;
+            _achiveLabel = null;
+            _messageBox = null;
         }
 
         #endregion

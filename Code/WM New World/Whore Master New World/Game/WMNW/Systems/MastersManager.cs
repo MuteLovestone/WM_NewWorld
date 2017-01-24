@@ -7,7 +7,7 @@ using InMan = WMNW.Core.InstanceManager;
 
 namespace WMNW.Systems
 {
-    public class MastersManager
+    public class MastersManager:IDisposable
     {
         #region Fields
 
@@ -42,6 +42,11 @@ namespace WMNW.Systems
         #endregion
 
         #region Game Logic
+
+        public void Dispose()
+        {
+            _instance.Dispose ();
+        }
 
         /// <summary>
         /// Gets the player.

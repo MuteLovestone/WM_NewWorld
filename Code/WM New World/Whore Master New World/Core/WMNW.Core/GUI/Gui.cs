@@ -67,15 +67,22 @@ namespace WMNW.Core.GUI
                 child.Selected = false;
 
                 foreach ( var c in control.Children )
+                {
+                    if ( c == null )
+                        continue;
                     c.Selected = false;
+                }
             }
-
             //Set our control as Selected
             if ( SelectedControl != null && SelectedControl.Selectable )
             {
                 control.Selected = true;
                 foreach ( var c in control.Children )
+                {
+                    if ( c == null )
+                        continue;
                     c.Selected = true;
+                }
             }
         }
 
@@ -99,11 +106,11 @@ namespace WMNW.Core.GUI
 
         public void Update( GameTime gameTime )
         {
-            
+            bool mouseLeftClicked = Mouse.ButtonPressed ( MouseButtons.Left );
             //Do hit test and see if we hit selected control
-            if ( !SelectedControl.Selectable || ( !Mouse.IsInside ( SelectedControl.Bounds ) && Mouse.ButtonPressed ( MouseButtons.Left ) ) )
+            if ( !SelectedControl.Selectable || ( !Mouse.IsInside ( SelectedControl.Bounds ) && mouseLeftClicked ) )
             {
-                var newControl = Controls.FirstOrDefault ( control => control.Bounds.Contains ( Mouse.CurrentPosition () ) && control.Selectable );
+                var newControl = Controls.LastOrDefault ( control => control.Bounds.Contains ( Mouse.CurrentPosition () ) && control.Selectable );
                 if ( newControl != null )
                     SelectControl ( newControl );
             }
@@ -111,10 +118,15 @@ namespace WMNW.Core.GUI
             Controls.OrderBy ( x => x.ZIndex );
             if ( Controls.Count == 0 )
                 return;
+            
             try
             {
                 foreach ( var c in Controls )
+                {
+                    if ( !c.Enabled )
+                        continue;
                     c.Update ( gameTime );
+                }
             }
             catch
             {
@@ -126,10 +138,13 @@ namespace WMNW.Core.GUI
             Controls.OrderBy ( x => x.ZIndex );
 
             foreach ( var c in Controls )
+            {
                 c.Draw ( gameTime );
-
+            }
             foreach ( var c in Controls )
+            {
                 c.DrawFinal ( gameTime );
+            }
         }
     }
 }

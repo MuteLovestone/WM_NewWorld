@@ -84,6 +84,11 @@
     <Compile Include="GameData\Buildings\BuildingJobs.cs" />
     <Compile Include="GameData\Buildings\RoomJobs.cs" />
     <Compile Include="GameData\Buildings\Job.cs" />
+    <Compile Include="GameData\Details\StatManager.cs" />
+    <Compile Include="GameData\Details\SkillManager.cs" />
+    <Compile Include="GameData\Details\StatusManager.cs" />
+    <Compile Include="GameData\Details\TempMod.cs" />
+    <Compile Include="GameData\Worker.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />

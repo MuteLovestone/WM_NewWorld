@@ -556,9 +556,9 @@ namespace WMNW.Core.GraphicX
         /// <param name="end">End Point</param>
         /// <param name="border">Border Width</param>
         /// <param name="alpha">Alpha</param>
-        public static void DrawHLine( Point start, int end, int border, float alpha )
+        public static void DrawHLine( Point start, int wid, int height, float alpha )
         {
-            _spriteBatch.Draw ( _whiteTexture, new Rectangle ( start.X, start.Y, end, border ), Color.White * alpha );
+            _spriteBatch.Draw ( _whiteTexture, new Rectangle ( start.X, start.Y, wid, height ), Color.White * alpha );
         }
 
         /// <summary>
@@ -568,9 +568,9 @@ namespace WMNW.Core.GraphicX
         /// <param name="end">End Point</param>
         /// <param name="border">Border Width</param>
         /// <param name="alpha">Alpha</param>
-        public static void DrawHLine( Point start, int end, int border, Color color )
+        public static void DrawHLine( Point start, int width, int height, Color color )
         {
-            _spriteBatch.Draw ( _whiteTexture, new Rectangle ( start.X, start.Y, end, border ), color );
+            _spriteBatch.Draw ( _whiteTexture, new Rectangle ( start.X, start.Y, width, height ), color );
         }
 
         /// <summary>
@@ -580,9 +580,9 @@ namespace WMNW.Core.GraphicX
         /// <param name="end">End Point</param>
         /// <param name="border">Border Width</param>
         /// <param name="alpha">Alpha</param>
-        public static void DrawVLine( Point start, int end, int border, float alpha )
+        public static void DrawVLine( Point start, int width, int height, float alpha )
         {
-            _spriteBatch.Draw ( _whiteTexture, new Rectangle ( start.X, start.Y, border, end ), Color.White * alpha );
+            _spriteBatch.Draw ( _whiteTexture, new Rectangle ( start.X, start.Y, width, height ), Color.White * alpha );
         }
 
         /// <summary>
@@ -592,9 +592,9 @@ namespace WMNW.Core.GraphicX
         /// <param name="end">End Point</param>
         /// <param name="border">Border Width</param>
         /// <param name="alpha">Alpha</param>
-        public static void DrawVLine( Point start, int end, int border, Color color )
+        public static void DrawVLine( Point start, int width, int height, Color color )
         {
-            _spriteBatch.Draw ( _whiteTexture, new Rectangle ( start.X, start.Y, end, border ), color );
+            _spriteBatch.Draw ( _whiteTexture, new Rectangle ( start.X, start.Y, width, height ), color );
         }
 
         /// <summary>

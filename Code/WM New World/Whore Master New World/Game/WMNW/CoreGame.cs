@@ -8,7 +8,7 @@ using WMNW.GameScreens;
 
 namespace WMNW
 {
-    public class CoreGame:WMNW.Core.GameBase
+    public sealed class CoreGame:WMNW.Core.GameBase
     {
         #region Fields
 
@@ -18,7 +18,6 @@ namespace WMNW
         private static CoreGame _instance;
 
         private static ConfigManager _configManager;
-        private static MastersManager _masterManager;
         private static SaveManager _saveManager;
         private static OverlayManager _overlayManager;
         private static SelectionManager _selectionManager;
@@ -139,6 +138,7 @@ namespace WMNW
         {
             base.OnExiting ( sender, args );
             ConfigManager.Save ();
+            _overlayManager.Dispose ();
             base.Exit ();
 
         }

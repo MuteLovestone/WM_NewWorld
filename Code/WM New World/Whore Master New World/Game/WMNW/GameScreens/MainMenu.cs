@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Threading;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using WMNW.Core.GraphicX.Screen;
 using WMNW.Core.GUI.Controls;
@@ -7,7 +7,7 @@ using WMNW.Systems;
 
 namespace WMNW.GameScreens
 {
-    public class MainMenu:ScreenBase
+    public sealed class MainMenu:ScreenBase
     {
         #region Fields
 
@@ -16,6 +16,7 @@ namespace WMNW.GameScreens
         Button _loadGameButton;
         Button _optionsButton;
         Button _exitButton;
+        ButtonList _menuBox;
 
         #endregion
 
@@ -35,9 +36,11 @@ namespace WMNW.GameScreens
             base.LoadOnShow ();
             #region Set Up Vars
             Vector2 backgroundSize = new Vector2 ( ConfigManager.Screen.Width - 2, ConfigManager.Screen.Height );
-            int posX = ConfigManager.Screen.Width / 2 - 150;
-            int posY = ConfigManager.Screen.Height / 3 - 25;
+            int btnCount = 4;
+            int btnListSpacer = 2;
             Vector2 buttonSize = new Vector2 ( 300, 50 );
+            int posX = ConfigManager.Screen.Width / 2 - ( ( int )buttonSize.X / 2 );
+            int posY = ConfigManager.Screen.Height / 2 - ( ( int )buttonSize.Y * btnCount + ( 2 * ( btnCount + 1 ) ) ) / 2;
             Color TextColor = Color.White;
             Color BorderColor = Color.Gold;
             Color BackColor = Color.Black;
@@ -48,35 +51,35 @@ namespace WMNW.GameScreens
             Gui.Add ( _backgroundControl );
             #endregion
             #region New Game Button
-            _newGameButton = new Button ( "UIFont", "New Game", TextColor, new Vector2 ( posX, posY ), buttonSize );
-            _newGameButton.ChangeColor ( BorderColor, BackColor );
+            _newGameButton = new Button ( "UIFont", "New Game", TextColor );
             _newGameButton.MouseClicked += NewGameButtonClicked;
-            Gui.Add ( _newGameButton );
             #endregion
             #region Load Game Button
-            posY += 52;
-            _loadGameButton = new Button ( "UIFont", "Load Game", TextColor, new Vector2 ( posX, posY ), buttonSize );
-            _loadGameButton.ChangeColor ( BorderColor, BackColor );
+            _loadGameButton = new Button ( "UIFont", "Load Game", TextColor );
             _loadGameButton.MouseClicked += LoadGameButtonClicked;
             if ( SaveManager.SaveCount () > 0 )
                 _loadGameButton.Enabled = true;
             else
                 _loadGameButton.Enabled = false;
-            Gui.Add ( _loadGameButton );
             #endregion
             #region Options Button
-            posY += 52;
-            _optionsButton = new Button ( "UIFont", "Options", TextColor, new Vector2 ( posX, posY ), buttonSize );
-            _optionsButton.ChangeColor ( BorderColor, BackColor );
+            _optionsButton = new Button ( "UIFont", "Options", TextColor );
             _optionsButton.MouseClicked += OptionsButtonClicked;
-            Gui.Add ( _optionsButton );
             #endregion
             #region Exit Button
-            posY += 52;
-            _exitButton = new Button ( "UIFont", "Shutdown", TextColor, new Vector2 ( posX, posY ), buttonSize );
-            _exitButton.ChangeColor ( BorderColor, BackColor );
+            _exitButton = new Button ( "UIFont", "Shutdown", TextColor );
             _exitButton.MouseClicked += ExitButtonClicked;
-            Gui.Add ( _exitButton );
+            #endregion
+            #region Menu List 
+            Vector2 ListSize = new Vector2 ( buttonSize.X, buttonSize.Y * btnCount + ( ( btnCount - 3 ) * btnListSpacer ) );
+            List<Button> btns = new List<Button> ();
+            btns.Add ( _newGameButton );
+            btns.Add ( _loadGameButton );
+            btns.Add ( _optionsButton );
+            btns.Add ( _exitButton );
+            _menuBox = new ButtonList ( ListSize, buttonSize, new Vector2 ( posX, posY ), btns, Stance.Vertical );
+            _menuBox.ChangeColor ( BorderColor, BackColor );
+            Gui.Add ( _menuBox );
             #endregion
         }
 
@@ -88,6 +91,7 @@ namespace WMNW.GameScreens
             _loadGameButton = null;
             _optionsButton = null;
             _exitButton = null;
+            _menuBox = null;
         }
 
         public override void LoadContent()
@@ -111,8 +115,7 @@ namespace WMNW.GameScreens
 
         public void LoadGameButtonClicked( object sender, WMMouseEventArgs e )
         {
-            Thread b = new Thread ( CoreGame.GetInstance ().NotYetImplimentedMessage );
-            b.Start ();
+            CoreGame.GetInstance ().NotYetImplimentedMessage ();
             //ScreenHandler.Change ( "LoadGame" );
         }
 

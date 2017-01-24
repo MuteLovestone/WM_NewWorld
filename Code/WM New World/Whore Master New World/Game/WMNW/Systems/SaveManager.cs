@@ -89,7 +89,9 @@ namespace WMNW.Systems
 
         private static string GetSavesPath()
         {
-            return pMan.GetFilePath ( cMan.Paths.SavePath );
+            string path = pMan.GetFilePath ( cMan.Paths.SavePath );
+            LogManager.LogLoad ( path );
+            return path;
         }
 
         #endregion

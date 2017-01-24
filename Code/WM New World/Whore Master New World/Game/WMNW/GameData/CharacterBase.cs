@@ -155,6 +155,21 @@ namespace WMNW.GameData
             _isSlave = false;
         }
 
+        public bool HasVagina()
+        {
+            if ( _gender == Genders.Female ||
+                 _gender == Genders.FemaleNeut ||
+                 _gender == Genders.Futa ||
+                 _gender == Genders.FutaNeut ||
+                 _gender == Genders.FutaFull ||
+                 _gender == Genders.HermFull ||
+                 _gender == Genders.HermNeut ||
+                 _gender == Genders.Herm )
+                return true;
+            else
+                return false;
+        }
+
         #endregion
 
         #region Save/Load Logic

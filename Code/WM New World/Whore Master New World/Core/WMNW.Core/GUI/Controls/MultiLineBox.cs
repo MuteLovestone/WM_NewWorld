@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using WMNW.Core.GraphicX;
@@ -9,7 +10,21 @@ namespace WMNW.Core.GUI.Controls
     {
         #region Properties
 
-        private string[] _multiLineString;
+        List<string> _multiLines = new List<string> ();
+        TrackBar scrollBar;
+        int offset = 0;
+
+        #endregion
+
+        #region Properties
+
+        private Vector2 TextSize
+        {
+            get
+            {
+                return Size - new Vector2 ( 10, 0 );
+            }
+        }
 
         #endregion
 
@@ -21,8 +36,15 @@ namespace WMNW.Core.GUI.Controls
             Text = text;
             TextColor = color;
             Position = position;
-
             Size = size;
+            scrollBar = new TrackBar ( new Vector2 ( position.X + size.X - 12, position.Y + 2 ), new Vector2 ( 10, size.Y - 4 ), Color.Gold, Vector2.Zero, "", Stance.Vertical );
+            scrollBar.OnValueChanged += ScrollBar_OnValueChanged;
+            Children.Add ( scrollBar );
+        }
+
+        void ScrollBar_OnValueChanged( object sender, EventArgs e )
+        {
+            offset = ( ( TrackBar )sender ).Value;
         }
 
         #endregion
@@ -31,30 +53,27 @@ namespace WMNW.Core.GUI.Controls
 
         public override void Update( GameTime gameTime )
         {
+            if ( !Enabled )
+                return;
             base.Update ( gameTime );
+            UpdateChildren ( gameTime );
             if ( !TextChanged && !FontChanged )
                 return;
             FontChanged = false;
             TextChanged = false;
+
+            //TASK: Update to use a ScrollBar
+
             //Mesure how long our string can be hieght wise for performance
             var i = ( int )( ( Size.Y ) / GraphicsHandler.MesureString ( Font, Text.Replace ( "\n", "" ) ).Y );
-
-            //Creates a multi line string that is as large as the box allows for
-            _multiLineString = new string[i];
-
-            //Set each item to an empty value
-            for ( var index = 0; index < _multiLineString.Length; index++ )
-                _multiLineString [ index ] = "";
-            //Loop through each line value and lets try and get what text should be set for that line
-            for ( var mls = 0; mls < _multiLineString.Length; mls++ )
+            #region Process Lines
+            bool isProccessing = true;
+            bool doNextLine = false;
+            do
             {
-                //First we confirm that the multiLine variable is not empty
-                //Next we Aggregate: This uses Text as the seed for current and then we replace anything found in the following items of the array with an empty string in the first value
-                //Next it loops through all other values doing the same thing and replacing all instances of text found with "" in text to give us what the value of the changing text is
+                doNextLine = false;
                 string changingText =
-                    _multiLineString.Where ( multiLine => multiLine != "" ).Aggregate ( Text, (current, multiLine ) => current.Substring ( multiLine.Length ) );
-
-                //if Changing text contains \n lets remove everything after the n
+                    _multiLines.Where ( multiLine => multiLine != "" ).Aggregate ( Text, (current, multiLine ) => current.Substring ( multiLine.Length ) );
                 if ( changingText.Contains ( "\n" ) )
                 {
                     //get index of our value
@@ -63,12 +82,11 @@ namespace WMNW.Core.GUI.Controls
                     if ( index > 0 )
                         changingText = changingText.Substring ( 0, index + 1 );
                     changingText = FitToScreen ( changingText );
-                    _multiLineString [ mls ] = changingText;
+                    _multiLines.Add ( changingText );
                 }
                 else
-                { 
-                    //MultiLineString[mls] = "TEXT!";
-                    while ( _multiLineString [ mls ] == "" )
+                {
+                    do
                     {
                         changingText = changingText.Substring ( 0, changingText.LastIndexOf ( " " ) < 0 ? 0 : changingText.LastIndexOf ( " " ) );
 
@@ -76,13 +94,35 @@ namespace WMNW.Core.GUI.Controls
                         var fontMesure = GraphicsHandler.MesureString ( Font, changingText ).X;
 
                         //If our font is bigger than 
-                        if ( fontMesure < Size.X )
-                            _multiLineString [ mls ] = changingText;
+                        if ( fontMesure < TextSize.X )
+                        {
+                            _multiLines.Add ( changingText );
+                            doNextLine = true;
+                        }
                         if ( fontMesure == 0 )
-                            break;
+                        {
+                            isProccessing = false;
+                            doNextLine = true;
+                        }
                     }
+                    while( !doNextLine );
                 }
             }
+            while ( isProccessing );
+            if ( _multiLines.Count > i )
+            {
+                scrollBar.MaximumValue = _multiLines.Count - i;
+                scrollBar.Enabled = true;
+            }
+            else
+                scrollBar.Enabled = false;
+            #endregion
+            #region Format Lines
+            for ( int c = 0; c < _multiLines.Count; c++ )
+            {
+                _multiLines [ c ] = _multiLines [ c ].Replace ( "\n", "" );
+            }
+            #endregion
         }
 
        
@@ -91,7 +131,7 @@ namespace WMNW.Core.GUI.Controls
             var fontMesure = GraphicsHandler.MesureString ( Font, changingText ).X;
             if ( fontMesure == 0 )
                 return "";
-            while ( fontMesure > Size.X )
+            while ( fontMesure > TextSize.X )
             {
                 changingText = changingText.Substring ( 0, changingText.LastIndexOf ( " " ) < 0 ? 0 : changingText.LastIndexOf ( " " ) );
                 fontMesure = GraphicsHandler.MesureString ( Font, changingText ).X;
@@ -104,19 +144,31 @@ namespace WMNW.Core.GUI.Controls
 
         public override void Draw( GameTime gameTime )
         {
+            if ( !Enabled )
+                return;
             base.Draw ( gameTime );
 
             // GraphicsHandler.DrawString(Font, Text, Position + TextOffset, TextColor);
-            if ( _multiLineString == null )
-                return;
-            for ( var index = 0; index < _multiLineString.Length; index++ )
-            {//Draw each one
-                var multiLine = _multiLineString [ index ].Replace ( "\n", "" );
+
+            for ( var index = 0; index < _multiLines.Count; index++ )
+            {
+                if ( index < offset )
+                    continue;
+                //Draw each one
+                var multiLine = _multiLines [ index ];
+                Vector2 textSize = GraphicsHandler.MesureString ( Font, _multiLines [ index ] );
+                Vector2 pos = Position + new Vector2 ( 0, ( index - offset ) * textSize.Y ) + TextOffset;
+                if ( pos.Y + textSize.Y > Position.X + Size.Y )
+                    continue;
                 //Determine where we draw our string by adding to position + where we are at in the loop times the size of font height
-                GraphicsHandler.DrawString ( Font, multiLine,
-                    Position + new Vector2 ( 0, index * GraphicsHandler.MesureString ( Font, _multiLineString [ index ].Replace ( "\n", "" ) ).Y ) + TextOffset,
-                    TextColor );
+                GraphicsHandler.DrawString ( Font, multiLine, pos, TextColor );
             }
+        }
+
+        public override void ChangeColor( Color? border, Color? background )
+        {
+            base.ChangeColor ( border, background );
+            scrollBar.ChangeColor ( border, background );
         }
 
         #endregion

@@ -145,7 +145,7 @@ namespace WMNW.Core.GUI.Controls
             //Set our position accounting for Padding, Line Size, and Position
             if ( _stance == Stance.Horizontal )
             {
-                var realPos = LineSize.X * percent / 100;
+                var realPos = LineSize.X * percent + 1 / 100;
                 _sliderBtn =
                     new Button (
                     new Vector2 ( ( int )( ( ( int )Position.X + Padding.X ) + realPos ),
@@ -158,7 +158,7 @@ namespace WMNW.Core.GUI.Controls
             }
             else
             {
-                var realPos = LineSize.Y * percent / 100;
+                var realPos = LineSize.Y * ( percent + 1 ) / 100;
                 _sliderBtn =
                     new Button (
                     new Vector2 ( ( int )( ( ( int )Position.X + LineSize.X * Padding.X - Padding.X ) ),
@@ -169,6 +169,7 @@ namespace WMNW.Core.GUI.Controls
                 _sliderBtn.Name = "_sliderBtn";
                 Children.Add ( _sliderBtn );
             }
+            Size = lineSize;
         }
 
         #endregion
@@ -179,8 +180,9 @@ namespace WMNW.Core.GUI.Controls
 
         public override void Update( GameTime gameTime )
         {
+            if ( !Enabled )
+                return;
             base.Update ( gameTime );
-
             if ( Selected )
             {
                 //Now allow mouse to move the knob if its pressed down inside the knob
@@ -192,7 +194,7 @@ namespace WMNW.Core.GUI.Controls
             //Stop allowing movement when released
             if ( Mouse.ButtonUp ( MouseButtons.Left ) )
                 _moving = false;
-
+            
             if ( _moving )
             {
                 if ( _stance == Stance.Horizontal )
@@ -210,7 +212,7 @@ namespace WMNW.Core.GUI.Controls
                     //Set our Slider Position as we move the mouse
                     _sliderBtn.Position = new Vector2 ( pos - 5,
                         ( int )( ( int )Position.Y + LineSize.Y * Padding.Y - Padding.Y ) );
-                    var px = w / _maxValue; //Get a percent of how large the line is compared to max value
+                    var px = ( ( float )_maxValue / w ); //Get a percent of how large the line is compared to max value
                     Value = ( int )( Math.Ceiling ( ( pos - Position.X - Padding.X ) * px ) );
                     //Create value based on Mouse position and the percentage we just ontained
                 }
@@ -228,7 +230,7 @@ namespace WMNW.Core.GUI.Controls
 
                     // Set our Slider Position as we move the mouse
                     _sliderBtn.Position = new Vector2 ( ( ( int )Position.X + LineSize.X * Padding.X - Padding.X ), pos - 5 );
-                    var px = h / _maxValue; //Get a percent of how large the line is compared to max value
+                    float px = ( ( float )_maxValue / h );//h / _maxValue; //Get a percent of how large the line is compared to max value
                     Value = ( int )( Math.Ceiling ( ( pos - Position.Y - Padding.Y ) * px ) );
                 }
             }
@@ -239,8 +241,9 @@ namespace WMNW.Core.GUI.Controls
 
         public override void Draw( GameTime gameTime )
         {
+            if ( !Enabled )
+                return;
             base.Draw ( gameTime );
-
             if ( _stance == Stance.Horizontal )
             {
                 //Draw The Line
@@ -255,7 +258,9 @@ namespace WMNW.Core.GUI.Controls
                 if ( LineTexture != null )
                     GraphicsHandler.Draw ( LineTexture, new Vector2 ( Position.X + Padding.X, ( int )( Position.Y + LineSize.Y * Padding.Y ) ), Color.White );
                 else
-                    GraphicsHandler.DrawVLine ( new Point ( ( int )( Position.X + Padding.X ), ( int )( Position.Y + LineSize.Y * Padding.Y ) ), ( int )LineSize.Y, 1, LineColor );
+                    GraphicsHandler.DrawVLine ( new Point ( ( int )( Position.X + Padding.X ), ( int )( Position.Y + LineSize.X * Padding.Y ) ), ( int )LineSize.X, ( int )LineSize.Y, LineColor );
+                //GraphicsHandler.DrawVLine ( new Point ( ( int )( Position.X + Padding.X ), ( int )( Position.Y + LineSize.X * Padding.Y ) ), ( int )LineSize.Y, 1, LineColor );
+                
             }
 
             DrawChildren ( gameTime );

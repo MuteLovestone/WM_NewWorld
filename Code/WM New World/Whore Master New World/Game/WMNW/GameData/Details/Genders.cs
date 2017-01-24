@@ -5,9 +5,18 @@ namespace WMNW.GameData.Details
     public enum Genders
     {
         Female,
+        FemaleNeut,
+        Futa,
+        FutaNeut,
+        FutaFull,
+        NoneFemale,
         None,
-        Male,
-        Futa
+        NoneMale,
+        HermFull,
+        HermNeut,
+        Herm,
+        MaleNeut,
+        Male
     }
 }
 
